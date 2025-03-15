@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>April Fools' Button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #link_button {
+            position: absolute;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: top 0.3s ease, left 0.3s ease;
+        }
+
+        /* Responsive cho điện thoại */
+        @media (max-width: 600px) {
+            #link_button {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a id="link_button" href="scratch-off/index.html">Ấn trúng hộ cái</a>
+
+    <script>
+        const link_button = document.getElementById("link_button");
+        let isRunning = true;
+        let startTime = Date.now();
+
+        function moveButton() {
+            if (!isRunning) return;
+
+            // Lấy kích thước màn hình và nút
+            const maxWidth = window.innerWidth - link_button.clientWidth;
+            const maxHeight = window.innerHeight - link_button.clientHeight;
+
+            // Đảm bảo nút luôn trong phạm vi màn hình
+            const x = Math.max(0, Math.random() * maxWidth);
+            const y = Math.max(0, Math.random() * maxHeight);
+
+            link_button.style.left = `${x}px`;
+            link_button.style.top = `${y}px`;
+        }
+
+        function checkTime() {
+            const elapsedTime = Date.now() - startTime;
+            if (elapsedTime >= 30000) {
+                isRunning = false;
+                link_button.style.left = "50%";
+                link_button.style.top = "50%";
+                link_button.style.transform = "translate(-50%, -50%)";
+            } else {
+                requestAnimationFrame(checkTime);
+            }
+        }
+
+        link_button.addEventListener("mouseover", moveButton);
+        link_button.addEventListener("touchstart", moveButton);
+
+        checkTime();
+    </script>
+</body>
+
+</html>
