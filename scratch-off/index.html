@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Cào Thẻ</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: pink;
+            flex-direction: column;
+        }
+
+        .contain {
+            position: relative;
+            text-align: center;
+        }
+
+        h2 {
+            padding: 5%;
+            width: 100vh;
+        }
+
+        canvas {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 200px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff4081;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:active {
+            background-color: #e91e63;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contain">
+        <h2>Chào mừng bạn đến với trò cào thẻ :))</h2>
+        <img src="angle.png" alt="thiên thần">
+        <canvas width="200" height="220"></canvas>
+    </div>
+    <button onclick="startScratching()">Cào ngay</button>
+
+    <script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        let isDrawing = false;
+
+        // Tạo lớp phủ
+        ctx.fillStyle = "#999";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function startScratching() {
+            isDrawing = true;
+        }
+
+        function stopScratching() {
+            isDrawing = false;
+        }
+
+        // Sự kiện chuột
+        canvas.addEventListener("mousedown", () => (isDrawing = true));
+        canvas.addEventListener("mouseup", stopScratching);
+        canvas.addEventListener("mousemove", scratch);
+
+        // Sự kiện cảm ứng
+        canvas.addEventListener("touchstart", () => (isDrawing = true));
+        canvas.addEventListener("touchend", stopScratching);
+        canvas.addEventListener("touchmove", scratch);
+    </script>
+</body>
+
+</html>
 
